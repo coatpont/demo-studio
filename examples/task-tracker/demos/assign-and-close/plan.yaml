@@ -1,0 +1,82 @@
+title: Hand over and close a late task
+objectives:
+  - Spot overdue work at a glance
+  - Assign a task and give it a due date
+  - Close a task safely
+audience: team leads evaluating Task Tracker
+language: en
+storyline: "Maya, a project manager, starts her week: she finds a late task in Apollo, hands it to Ada with a
+  new due date, and closes it once the work is done."
+introduction: "Welcome to Task Tracker. In one minute, we follow Maya, a project manager, as she spots a late
+  task, hands it to a teammate and closes it. The people and projects you will see are fictional."
+scenes:
+  - id: s1-overdue
+    title: What is late?
+    featureIds:
+      - tasks:list
+    caseIds:
+      - tasks:L1
+    entryRouteName: project_tasks
+    account: manager
+    dataRecords:
+      - project-apollo
+      - task-landing-page
+    dataRequirements:
+      - a project with overdue tasks (Apollo)
+    dataGaps: []
+    narrative: "Maya starts her week on the dashboard. From the Projects menu, she opens the tasks of Apollo.
+      Overdue tasks stand out in red: the landing page is already late."
+    userActions:
+      - Open the "Projects" menu, then "Tasks"
+      - Spot the row "Design the landing page", marked overdue
+    expectedOutcome: The task list of Apollo, with "Design the landing page" shown as overdue.
+    estimatedDurationSeconds: 18
+    excerpt: null
+  - id: s2-assign
+    title: Hand it over to Ada
+    featureIds:
+      - tasks:assign
+    caseIds:
+      - tasks:A1
+    entryRouteName: task_show
+    account: manager
+    dataRecords:
+      - task-landing-page
+      - user-ada
+    dataRequirements:
+      - an unassigned task, and a member of the project
+    dataGaps: []
+    narrative: "She opens the landing page task. In the side panel, she picks Ada as the assignee. Then she sets
+      the due date to next week. Ada's name now shows on the task."
+    userActions:
+      - Open the task "Design the landing page"
+      - Choose "Ada Lovelace" in "Assignee"
+      - Set "Due date" to next week
+    expectedOutcome: The task shows Ada Lovelace as its assignee.
+    estimatedDurationSeconds: 20
+    excerpt: null
+  - id: s3-close
+    title: Done
+    featureIds:
+      - tasks:close
+    caseIds:
+      - tasks:C1
+    entryRouteName: task_show
+    account: manager
+    dataRecords:
+      - task-landing-page
+    dataRequirements:
+      - the same task, still open
+    dataGaps: []
+    narrative: "When the work is done, closing the task takes one click. A confirmation avoids mistakes. The
+      task joins the Done column."
+    userActions:
+      - Click "Close task"
+      - Confirm in the dialog
+    expectedOutcome: The task is in the Done column.
+    estimatedDurationSeconds: 15
+    excerpt: null
+excludedFeatures:
+  - featureId: tasks:comments
+    reason: inferred from the code only, no documented case
+unsupportedRequests: []

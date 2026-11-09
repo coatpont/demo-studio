@@ -1,0 +1,12 @@
+id: assign-and-close
+title: Hand over and close a late task
+description: "Deep dive into tasks for team leads: spot an overdue task from the dashboard, assign it with a due
+  date, then close it once done."
+status: draft
+audience: team leads evaluating Task Tracker
+language: en
+mode: deep-dive
+modules:
+  - tasks
+prompt: null
+targetDurationSeconds: 60

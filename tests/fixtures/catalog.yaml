@@ -1,0 +1,99 @@
+# A small fictional task tracker, enough to exercise every rule of the validators.
+product:
+  name: Task Tracker
+  description: Plan projects, assign tasks and follow their progress.
+homeRoute: dashboard
+modules:
+  - id: tasks
+    title: Tasks
+    description: Create, assign and close the tasks of a project.
+    knowledge: Overdue tasks are shown in red. Closing a task asks for a confirmation.
+    features:
+      - id: list
+        title: Task list
+        confidence: verified
+        cases:
+          - id: L1
+            action: Open the task list of a project
+            expected: The project's tasks are listed, overdue ones in red
+          - id: L2
+            action: Filter by assignee
+            expected: Only their tasks remain
+          - id: L3
+            action: Call the list API without a token
+            expected: HTTP 401
+            obsolete: true
+      - id: assign
+        title: Assign a task
+        confidence: verified
+        cases:
+          - id: A1
+            action: Pick an assignee on a task
+            expected: The task shows their avatar
+      - id: refusal
+        title: Refusals
+        confidence: documented
+        cases:
+          - id: R1
+            action: Open a task as a guest
+            expected: The Edit button is absent
+          - id: R2
+            action: Post the form without its CSRF token
+            expected: HTTP 403
+            tags: [technical]
+  - id: reports
+    title: Reports
+    description: Weekly progress charts.
+    features:
+      - id: burndown
+        title: Burndown chart
+        confidence: inferred
+routes:
+  - name: dashboard
+    path: /
+    module: [tasks, reports]
+  - name: task_list
+    path: /projects/{project}/tasks
+    module: tasks
+  - name: task_show
+    path: /tasks/{id}
+    module: tasks
+    description: A task with its history and comments
+  - name: task_api
+    path: /api/tasks
+    kind: api
+    module: tasks
+  - name: task_close
+    path: /tasks/{id}/close
+    kind: action
+    module: tasks
+  - name: report_week
+    path: /reports/{week?}
+    module: reports
+  - name: docs
+    path: /docs/{page*}
+navigation:
+  - path: Work > Tasks
+    route: task_list
+  - path: Reports > Weekly
+    route: report_week
+accounts:
+  - id: manager
+    description: Project manager; creates and assigns tasks
+    permissions: [tasks.edit]
+  - id: guest
+    description: Read-only guest
+  - id: admin
+    description: Administrator
+data:
+  - id: project-apollo
+    description: Project Apollo, twelve tasks of which three are overdue
+    entity: Project
+    modules: [tasks]
+  - id: task-landing-page
+    description: Task "Design the landing page", assigned to Ada
+    entity: Task
+    modules: [tasks]
+  - id: user-ada
+    description: Ada Lovelace, developer on every project
+    entity: User

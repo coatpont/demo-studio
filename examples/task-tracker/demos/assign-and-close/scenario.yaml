@@ -1,0 +1,95 @@
+scenarioVersion: 1
+lookups:
+  landing:
+    entity: Task
+    where:
+      title: Design the landing page
+      project.name: Apollo
+    dataRecord: task-landing-page
+    description: the overdue task of Apollo
+scenes:
+  - id: s1-overdue
+    account: manager
+    steps:
+      - id: home
+        action: goto
+        route: dashboard
+      - id: menu
+        action: click
+        target:
+          role: button
+          name: Projects
+        anchor: From the Projects menu
+      - id: tasks
+        action: click
+        target:
+          role: menuitem
+          name: Tasks
+      - id: overdue
+        action: expectText
+        target:
+          role: row
+          name: Design the landing page
+        text: Overdue
+        anchor: the landing page is already late
+      - id: read
+        action: hold
+        ms: 1500
+  - id: s2-assign
+    account: manager
+    # Reached from the list in s1-overdue: the way there has been shown already.
+    steps:
+      - id: open
+        action: goto
+        route: task_show
+        params:
+          id:
+            lookup: landing
+      - id: assignee
+        action: select
+        target:
+          label: Assignee
+        option: Ada Lovelace
+        anchor: she picks Ada as the assignee
+      - id: due
+        action: fill
+        target:
+          label: Due date
+        value:
+          daysFromToday: 7
+        anchor: sets the due date to next week
+      - id: shown
+        action: expectText
+        target:
+          testId: task-assignee
+        text: Ada Lovelace
+        anchor: Ada's name now shows
+  - id: s3-close
+    account: manager
+    steps:
+      - id: open
+        action: goto
+        route: task_show
+        params:
+          id:
+            lookup: landing
+      - id: close
+        action: click
+        target:
+          role: button
+          name: Close task
+        anchor: closing the task takes one click
+      - id: confirm
+        action: click
+        target:
+          role: button
+          name: Confirm
+          within:
+            role: dialog
+        anchor: A confirmation avoids mistakes
+      - id: done
+        action: expectVisible
+        target:
+          text: Done
+          exact: true
+        anchor: joins the Done column

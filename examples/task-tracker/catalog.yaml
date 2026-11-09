@@ -1,0 +1,112 @@
+# What the writing agent may show of Task Tracker, and nothing else.
+product:
+  name: Task Tracker
+  description: A web app where small teams plan projects, assign tasks and follow their progress.
+homeRoute: dashboard
+
+modules:
+  - id: tasks
+    title: Tasks
+    description: Create, assign, comment and close the tasks of a project.
+    knowledge: |
+      Overdue tasks are shown in red in every list. Closing a task asks for a confirmation in a dialog.
+      Only managers can assign a task to someone else; members can only take a task for themselves.
+    features:
+      - id: list
+        title: Task list of a project
+        description: The tasks of a project, filterable by assignee and status.
+        confidence: verified
+        cases:
+          - id: L1
+            action: Open a project's task list
+            expected: The tasks are listed, overdue ones in red
+          - id: L2
+            action: Filter the list by assignee
+            expected: Only that person's tasks remain
+          - id: L3
+            action: Request the list API without a session
+            expected: HTTP 401
+            tags: [technical]
+      - id: assign
+        title: Assign a task
+        description: A manager picks the assignee of a task.
+        confidence: verified
+        cases:
+          - id: A1
+            action: As a manager, choose an assignee in the task's side panel
+            expected: The assignee's name appears on the task and in the list
+          - id: A2
+            action: As a member, open the assignee menu of someone else's task
+            expected: The menu only offers "Assign to me"
+      - id: close
+        title: Close a task
+        confidence: documented
+        cases:
+          - id: C1
+            action: Click "Close task" and confirm
+            expected: The task moves to the Done column with today's date
+      - id: comments
+        title: Comments
+        confidence: inferred
+
+  - id: reports
+    title: Reports
+    description: Weekly progress of each project.
+    features:
+      - id: weekly
+        title: Weekly report
+        confidence: documented
+        cases:
+          - id: W1
+            action: Open the weekly report of a project
+            expected: Tasks closed and opened during the week are counted
+
+routes:
+  - name: dashboard
+    path: /
+    module: [tasks, reports]
+    description: Projects of the user, with their overdue tasks
+  - name: project_tasks
+    path: /projects/{project}/tasks
+    module: tasks
+  - name: task_show
+    path: /tasks/{id}
+    module: tasks
+    description: A task with its side panel (assignee, due date) and its comments
+  - name: task_api
+    path: /api/projects/{project}/tasks
+    kind: api
+    module: tasks
+  - name: report_week
+    path: /projects/{project}/reports/{week?}
+    module: reports
+  - name: login
+    path: /login
+
+navigation:
+  - path: Projects > Tasks
+    route: project_tasks
+  - path: Projects > Reports
+    route: report_week
+
+accounts:
+  - id: manager
+    description: Maya, project manager; assigns and closes tasks on every project
+    permissions: [tasks.assign, tasks.close]
+  - id: member
+    description: Ada, team member; works on her own tasks
+  - id: visitor
+    description: Not logged in
+
+data:
+  - id: project-apollo
+    description: Project "Apollo", twelve tasks of which three are overdue
+    entity: Project
+    modules: [tasks, reports]
+  - id: task-landing-page
+    description: Task "Design the landing page" in Apollo, overdue, not assigned
+    entity: Task
+    modules: [tasks]
+  - id: user-ada
+    description: Ada Lovelace, member of Apollo
+    entity: User

@@ -1,0 +1,18 @@
+{
+    "compilerOptions": {
+        "target": "es2024",
+        "jsx": "react-jsx",
+        "lib": ["es2024", "dom"],
+        "module": "nodenext",
+        "moduleResolution": "nodenext",
+        "strict": true,
+        "noEmit": true,
+        "allowImportingTsExtensions": true,
+        "erasableSyntaxOnly": true,
+        "verbatimModuleSyntax": true,
+        "skipLibCheck": true,
+        "types": ["node"],
+        "paths": { "demo-studio": ["./src/index.ts"] }
+    },
+    "include": ["src", "tests", "examples", "vitest.config.ts"]
+}
