@@ -2,6 +2,7 @@
     "name": "demo-studio",
     "version": "0.1.0",
     "description": "Narrated demo videos of a web app, written by a coding agent from a catalog of its real features, played by Playwright and rendered by Remotion.",
+    "license": "MIT",
     "type": "module",
     "bin": {
         "demo-studio": "./bin/demo-studio.js"

@@ -386,3 +386,7 @@ npm run demo-studio -- --config examples/task-tracker/demo-studio.config.ts chec
 ```
 
 From a git checkout without `dist/`, the bin runs the TypeScript sources directly. Remotion bundles the video composition from `src/video/`, which is why the sources ship with the package.
+
+## License
+
+[MIT](LICENSE). Remotion, a dependency, is licensed separately: see [remotion.dev/license](https://www.remotion.dev/license).
